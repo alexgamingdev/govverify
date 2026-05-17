@@ -1,0 +1,20 @@
+[
+  {
+    "id": "alex_home",
+    "alias": "alex",
+    "url": "https://alexgaming.is-a.dev",
+    "description": "Persönliche Seite von alexgaming"
+  },
+  {
+    "id": "gh_repo",
+    "alias": "govverify",
+    "url": "https://alexgamingdev.github.io/govverify/",
+    "description": "GovVerify Demo-Website"
+  },
+  {
+    "id": "google",
+    "alias": "g",
+    "url": "https://www.google.com",
+    "description": "Shortlink to Google"
+  }
+]

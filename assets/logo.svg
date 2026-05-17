@@ -1,0 +1,23 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">GovVerify Logo</title>
+  <desc id="desc">Shield logo with a checkmark for verified government domains.</desc>
+  <defs>
+    <linearGradient id="bg" x1="96" y1="64" x2="416" y2="448" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0F172A" />
+      <stop offset="1" stop-color="#1D4ED8" />
+    </linearGradient>
+    <linearGradient id="shield" x1="146" y1="108" x2="366" y2="404" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E0F2FE" />
+      <stop offset="1" stop-color="#BFDBFE" />
+    </linearGradient>
+    <linearGradient id="check" x1="190" y1="222" x2="322" y2="330" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#22C55E" />
+      <stop offset="1" stop-color="#0F766E" />
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="128" fill="url(#bg)" />
+  <path d="M256 86L372 128V238C372 314.5 326.4 382.5 256 426C185.6 382.5 140 314.5 140 238V128L256 86Z" fill="url(#shield)" stroke="rgba(255,255,255,0.35)" stroke-width="8" />
+  <path d="M208 265L241 298L305 230" stroke="url(#check)" stroke-width="28" stroke-linecap="round" stroke-linejoin="round" />
+  <circle cx="256" cy="186" r="34" fill="#1D4ED8" fill-opacity="0.12" />
+  <path d="M256 160L261 175L277 175L264 184L269 199L256 190L243 199L248 184L235 175L251 175L256 160Z" fill="#1D4ED8" fill-opacity="0.9" />
+</svg>

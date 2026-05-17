@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>GovVerify</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --panel: rgba(255, 255, 255, 0.94);
+        --panel-border: rgba(15, 23, 42, 0.1);
+        --text: #0f172a;
+        --muted: #5b6475;
+        --accent: #2563eb;
+      }
+
+      body {
+        width: 340px;
+        margin: 0;
+        font: 13px/1.5 Inter, "Segoe UI", system-ui, sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(circle at top, rgba(59, 130, 246, 0.22), transparent 42%),
+          linear-gradient(180deg, #f4f7fc 0%, #e7eef8 100%);
+      }
+
+      .shell {
+        padding: 14px;
+      }
+
+      .card {
+        border: 1px solid var(--panel-border);
+        border-radius: 20px;
+        background: var(--panel);
+        box-shadow: 0 20px 40px rgba(15, 23, 42, 0.12);
+        overflow: hidden;
+      }
+
+      .header {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 16px 16px 14px;
+        border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+        background: linear-gradient(135deg, rgba(37, 99, 235, 0.08), rgba(15, 118, 110, 0.05));
+      }
+
+      .brand-mark {
+        width: 44px;
+        height: 44px;
+        flex: 0 0 auto;
+        border-radius: 14px;
+        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.16);
+      }
+
+      .brand-copy {
+        min-width: 0;
+      }
+
+      .eyebrow {
+        margin: 0;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        font-size: 11px;
+        color: var(--accent);
+        font-weight: 800;
+      }
+
+      .title {
+        margin: 4px 0 0;
+        font-size: 18px;
+        line-height: 1.2;
+      }
+
+      .subtitle {
+        margin: 6px 0 0;
+        color: var(--muted);
+      }
+
+      .content {
+        padding: 16px;
+        display: grid;
+        gap: 12px;
+      }
+
+      .status {
+        padding: 14px;
+        border-radius: 16px;
+        border: 1px solid rgba(15, 23, 42, 0.08);
+        background: rgba(248, 250, 252, 0.96);
+      }
+
+      .status.verified {
+        border-color: rgba(37, 99, 235, 0.18);
+        background: rgba(37, 99, 235, 0.06);
+      }
+
+      .status.warning {
+        border-color: rgba(185, 28, 28, 0.2);
+        background: rgba(185, 28, 28, 0.06);
+      }
+
+      .status-title {
+        margin: 0;
+        font-size: 15px;
+        font-weight: 700;
+      }
+
+      .status-copy {
+        margin: 4px 0 0;
+        color: var(--muted);
+      }
+
+      .meta {
+        display: grid;
+        gap: 8px;
+      }
+
+      .row {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .label {
+        color: var(--muted);
+      }
+
+      .value {
+        text-align: right;
+        font-weight: 600;
+      }
+
+      .button {
+        width: 100%;
+        padding: 10px 14px;
+        border: 0;
+        border-radius: 999px;
+        background: var(--accent);
+        color: #fff;
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .button:disabled {
+        opacity: 0.72;
+        cursor: default;
+      }
+
+      .fineprint {
+        font-size: 12px;
+        color: var(--muted);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <div class="card">
+        <div class="header">
+          <img class="brand-mark" src="../assets/logo.svg" alt="GovVerify Logo" />
+          <div class="brand-copy">
+            <p class="eyebrow">GovVerify</p>
+            <h1 class="title">Webseiten-Identität prüfen</h1>
+            <p class="subtitle">Die Erweiterung nutzt lokal gecachte JSON-Daten und aktualisiert sie alle 6 Stunden im Hintergrund.</p>
+          </div>
+        </div>
+        <div class="content">
+          <div class="status" id="statusBox">
+            <p class="status-title" id="statusTitle">Lade Status ...</p>
+            <p class="status-copy" id="statusCopy">Bitte kurz warten.</p>
+          </div>
+          <div class="meta">
+            <div class="row"><span class="label">Domain</span><span class="value" id="domainValue">-</span></div>
+            <div class="row"><span class="label">Verifizierter Name</span><span class="value" id="nameValue">-</span></div>
+            <div class="row"><span class="label">Zertifikatstyp</span><span class="value" id="certValue">-</span></div>
+            <div class="row"><span class="label">Cache</span><span class="value" id="cacheValue">-</span></div>
+          </div>
+          <button class="button" id="refreshButton" type="button">Cache neu laden</button>
+          <div class="fineprint" id="footerNote">Wenn keine Verbindung besteht, wird der zuletzt gespeicherte Stand genutzt.</div>
+        </div>
+      </div>
+    </div>
+    <script src="popup.js"></script>
+  </body>
+</html>

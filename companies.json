@@ -1,0 +1,195 @@
+[
+  {
+    "id": "apple",
+    "name": "Apple Inc.",
+    "domain": "apple.com",
+    "country": "United States",
+    "industry": "Technology",
+    "website": "https://www.apple.com"
+  },
+  {
+    "id": "alphabet",
+    "name": "Alphabet Inc. (Google)",
+    "domain": "google.com",
+    "country": "United States",
+    "industry": "Technology / Internet",
+    "website": "https://www.google.com"
+  },
+  {
+    "id": "microsoft",
+    "name": "Microsoft Corporation",
+    "domain": "microsoft.com",
+    "country": "United States",
+    "industry": "Technology / Software",
+    "website": "https://www.microsoft.com"
+  },
+  {
+    "id": "amazon",
+    "name": "Amazon.com, Inc.",
+    "domain": "amazon.com",
+    "country": "United States",
+    "industry": "E-commerce / Cloud",
+    "website": "https://www.amazon.com"
+  },
+  {
+    "id": "meta",
+    "name": "Meta Platforms, Inc. (Facebook)",
+    "domain": "meta.com",
+    "country": "United States",
+    "industry": "Social Media / Technology",
+    "website": "https://about.meta.com"
+  },
+  {
+    "id": "tesla",
+    "name": "Tesla, Inc.",
+    "domain": "tesla.com",
+    "country": "United States",
+    "industry": "Automotive / Energy",
+    "website": "https://www.tesla.com"
+  },
+  {
+    "id": "samsung",
+    "name": "Samsung Electronics",
+    "domain": "samsung.com",
+    "country": "South Korea",
+    "industry": "Electronics",
+    "website": "https://www.samsung.com"
+  },
+  {
+    "id": "ibm",
+    "name": "IBM",
+    "domain": "ibm.com",
+    "country": "United States",
+    "industry": "Technology / Consulting",
+    "website": "https://www.ibm.com"
+  },
+  {
+    "id": "intel",
+    "name": "Intel Corporation",
+    "domain": "intel.com",
+    "country": "United States",
+    "industry": "Semiconductors",
+    "website": "https://www.intel.com"
+  },
+  {
+    "id": "oracle",
+    "name": "Oracle Corporation",
+    "domain": "oracle.com",
+    "country": "United States",
+    "industry": "Software / Cloud",
+    "website": "https://www.oracle.com"
+  },
+  {
+    "id": "walmart",
+    "name": "Walmart Inc.",
+    "domain": "walmart.com",
+    "country": "United States",
+    "industry": "Retail",
+    "website": "https://www.walmart.com"
+  },
+  {
+    "id": "exxonmobil",
+    "name": "Exxon Mobil Corporation",
+    "domain": "exxonmobil.com",
+    "country": "United States",
+    "industry": "Energy / Oil & Gas",
+    "website": "https://corporate.exxonmobil.com"
+  },
+  {
+    "id": "shell",
+    "name": "Shell plc",
+    "domain": "shell.com",
+    "country": "Netherlands / UK",
+    "industry": "Energy / Oil & Gas",
+    "website": "https://www.shell.com"
+  },
+  {
+    "id": "berkshire",
+    "name": "Berkshire Hathaway Inc.",
+    "domain": "berkshirehathaway.com",
+    "country": "United States",
+    "industry": "Conglomerate",
+    "website": "https://www.berkshirehathaway.com"
+  },
+  {
+    "id": "toyota",
+    "name": "Toyota Motor Corporation",
+    "domain": "toyota.com",
+    "country": "Japan",
+    "industry": "Automotive",
+    "website": "https://global.toyota"
+  },
+  {
+    "id": "volkswagen",
+    "name": "Volkswagen AG",
+    "domain": "volkswagen.com",
+    "country": "Germany",
+    "industry": "Automotive",
+    "website": "https://www.volkswagen.com"
+  },
+  {
+    "id": "siemens",
+    "name": "Siemens AG",
+    "domain": "siemens.com",
+    "country": "Germany",
+    "industry": "Industrial / Engineering",
+    "website": "https://www.siemens.com"
+  },
+  {
+    "id": "nestle",
+    "name": "Nestlé S.A.",
+    "domain": "nestle.com",
+    "country": "Switzerland",
+    "industry": "Food & Beverage",
+    "website": "https://www.nestle.com"
+  },
+  {
+    "id": "cocacola",
+    "name": "The Coca-Cola Company",
+    "domain": "coca-cola.com",
+    "country": "United States",
+    "industry": "Beverages",
+    "website": "https://www.coca-colacompany.com"
+  },
+  {
+    "id": "pepsico",
+    "name": "PepsiCo, Inc.",
+    "domain": "pepsico.com",
+    "country": "United States",
+    "industry": "Food & Beverage",
+    "website": "https://www.pepsico.com"
+  },
+  {
+    "id": "tencent",
+    "name": "Tencent Holdings Ltd.",
+    "domain": "tencent.com",
+    "country": "China",
+    "industry": "Technology / Internet",
+    "website": "https://www.tencent.com"
+  },
+  {
+    "id": "alibaba",
+    "name": "Alibaba Group",
+    "domain": "alibaba.com",
+    "country": "China",
+    "industry": "E-commerce / Cloud",
+    "website": "https://www.alibaba.com"
+  },
+  {
+    "id": "saudiaramco",
+    "name": "Saudi Aramco",
+    "domain": "aramco.com",
+    "country": "Saudi Arabia",
+    "industry": "Energy / Oil & Gas",
+    "website": "https://www.aramco.com"
+  },
+  {
+    "id": "alexgaming",
+    "name": "alexgaming.is-a.dev",
+    "domain": "alexgaming.is-a.dev",
+    "country": "Germany",
+    "industry": "Personal Website",
+    "website": "https://alexgaming.is-a.dev",
+    "note": "Meine Seite"
+  }
+]

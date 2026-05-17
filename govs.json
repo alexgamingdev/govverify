@@ -1,0 +1,26 @@
+[
+  {
+    "id": "usa_gov",
+    "name": "United States Government",
+    "domain": "usa.gov",
+    "country": "United States",
+    "website": "https://www.usa.gov",
+    "type": "federal"
+  },
+  {
+    "id": "gov_uk",
+    "name": "United Kingdom Government",
+    "domain": "gov.uk",
+    "country": "United Kingdom",
+    "website": "https://www.gov.uk",
+    "type": "national"
+  },
+  {
+    "id": "bund_de",
+    "name": "Bundesregierung (Deutschland)",
+    "domain": "bund.de",
+    "country": "Germany",
+    "website": "https://www.bundesregierung.de",
+    "type": "national"
+  }
+]

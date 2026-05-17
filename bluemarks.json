@@ -1,0 +1,29 @@
+[
+  {
+    "id": "twitter_blue",
+    "name": "Twitter Blue (X)",
+    "issuer": "X Corp.",
+    "color": "#1DA1F2",
+    "symbol": "blue_check",
+    "website": "https://x.com",
+    "description": "Verified subscription badge for X (formerly Twitter)."
+  },
+  {
+    "id": "meta_verified",
+    "name": "Meta Verified",
+    "issuer": "Meta Platforms",
+    "color": "#1877F2",
+    "symbol": "blue_check",
+    "website": "https://about.facebook.com/meta-verified",
+    "description": "Paid verification service from Meta for Facebook and Instagram accounts."
+  },
+  {
+    "id": "linkedin_verified",
+    "name": "LinkedIn Verified",
+    "issuer": "LinkedIn",
+    "color": "#0A66C2",
+    "symbol": "blue_check",
+    "website": "https://www.linkedin.com/",
+    "description": "Verification badge used on LinkedIn to indicate account authenticity."
+  }
+]
