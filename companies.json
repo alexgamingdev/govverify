@@ -192,4 +192,16 @@
     "website": "https://alexgaming.is-a.dev",
     "note": "Meine Seite"
   }
+  ,
+  {
+    "id": "gurkenschau",
+    "name": "Gurkenschau",
+    "domain": "gurkenschau.gk",
+    "country": "Germany",
+    "industry": "News / Media",
+    "website": "https://gurkenschau.eu",
+    "target": "https://gurkenschau.eu",
+    "logo": "https://alexgamingdev.github.io/govverify/assets/gurkenschau-logo.png",
+    "note": "Beispiel .gk masked domain; zeigt Inhalt von gurkenschau.eu aber Adresse bleibt .gk. Höchster Haken (manuell eingetragen)."
+  }
 ]

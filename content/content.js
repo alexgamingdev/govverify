@@ -59,14 +59,35 @@
     });
   }
 
-  // fast shortlink check only (performed immediately)
+  // request fresh data from background (bypasses persistent storage when `fresh:true`)
+  function requestFresh(name) {
+    return new Promise((resolve) => {
+      try {
+        chrome.runtime.sendMessage({ type: "govverify:get", name, fresh: true }, (resp) => {
+          try {
+            resolve(resp && resp.ok ? resp.payload || null : null);
+          } catch (e) {
+            resolve(null);
+          }
+        });
+      } catch (e) {
+        resolve(null);
+      }
+    });
+  }
+
+  // fast shortlink check only (performed immediately) — always request fresh data from remote
   async function checkShortlinkNow(host) {
     try {
-      const res = await getStorage([KEYS.shortlinks]);
-      const shortlinks = res[KEYS.shortlinks]?.data || null;
+      const payload = await requestFresh("shortlinks");
+      const shortlinks = payload?.data || null;
       cache.shortlinks = shortlinks;
       if (!shortlinks) return null;
+
       const h = normalizeHost(host);
+      const pathname = String(window.location.pathname || "").replace(/\/+$/, "");
+      const origin = window.location.origin;
+
       // if shortlinks is an object map, check keys first for performance
       if (!Array.isArray(shortlinks) && typeof shortlinks === "object") {
         const candidates = getHostCandidates(host);
@@ -75,11 +96,27 @@
           if (shortlinks[c]) return shortlinks[c];
         }
       }
+
       // fallback to array scan (small arrays are fast)
       for (const entry of shortlinks) {
+        // support path-based shortlinks (GitHub Pages): entry.path can be '/govverify/alex' or 'alex'
+        if (entry.path) {
+          const p = String(entry.path || "").replace(/\/+$/, "");
+          if (p) {
+            if (pathname === p || pathname === '/' + p || pathname.endsWith('/' + p)) return entry;
+            if ((entry.path_full && origin + pathname === entry.path_full) || false) return entry;
+          }
+        }
+
         const domain = normalizeHost(entry.domain || entry.alias || entry.id || entry.alias);
-        if (!domain) continue;
-        if (h === domain || h.endsWith("." + domain)) return entry;
+        if (domain) {
+          if (h === domain || h.endsWith("." + domain)) return entry;
+        }
+
+        // alias may be used as last path segment
+        if (entry.alias) {
+          if (pathname === '/' + entry.alias || pathname.endsWith('/' + entry.alias)) return entry;
+        }
       }
     } catch (e) {
       // ignore
@@ -90,11 +127,15 @@
   // load remaining data in parallel but non-blocking
   async function populateCache() {
     try {
-      const keys = [KEYS.bluemarks, KEYS.companies, KEYS.govs];
-      const res = await getStorage(keys);
-      cache.bluemarks = res[KEYS.bluemarks]?.data || cache.bluemarks;
-      cache.companies = res[KEYS.companies]?.data || cache.companies;
-      cache.govs = res[KEYS.govs]?.data || cache.govs;
+      // always fetch fresh copies for bluemarks, companies and govs
+      const [bm, co, gv] = await Promise.all([
+        requestFresh("bluemarks"),
+        requestFresh("companies"),
+        requestFresh("govs"),
+      ]);
+      cache.bluemarks = bm?.data || null;
+      cache.companies = co?.data || null;
+      cache.govs = gv?.data || null;
     } catch (e) {
       // ignore - keep existing cache
     }
@@ -104,6 +145,7 @@
     const shortlinks = cache.shortlinks;
     if (!shortlinks) return null;
     const h = normalizeHost(host);
+    const pathname = String(window.location.pathname || "").replace(/\/+$/, "");
     if (!Array.isArray(shortlinks) && typeof shortlinks === "object") {
       const candidates = getHostCandidates(host);
       candidates.unshift(stripWww(host));
@@ -112,9 +154,17 @@
       }
     }
     for (const entry of shortlinks) {
+      if (entry.path) {
+        const p = String(entry.path || "").replace(/\/+$/, "");
+        if (p && (pathname === p || pathname === '/' + p || pathname.endsWith('/' + p))) return entry;
+      }
       const domain = normalizeHost(entry.domain || entry.alias || entry.id || entry.alias);
-      if (!domain) continue;
-      if (h === domain || h.endsWith("." + domain)) return entry;
+      if (domain) {
+        if (h === domain || h.endsWith("." + domain)) return entry;
+      }
+      if (entry.alias) {
+        if (pathname === '/' + entry.alias || pathname.endsWith('/' + entry.alias)) return entry;
+      }
     }
     return null;
   }
@@ -226,13 +276,14 @@
       <style>
         :host{all:initial}
         .badge{pointer-events:auto;display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,0.95);box-shadow:0 8px 24px rgba(2,6,23,0.12);border:1px solid rgba(2,6,23,0.06);min-width:180px}
-        .dot{width:12px;height:12px;border-radius:999px;flex:0 0 auto}
+        .dot{width:36px;height:36px;border-radius:8px;flex:0 0 auto;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#fff}
+        .dot img{width:100%;height:100%;object-fit:contain;display:block}
         .copy{overflow:hidden}
         .eyebrow{font-size:11px;font-weight:700;text-transform:uppercase;color:#374151}
         .name{font-weight:800;font-size:13px;color:#0f172a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
       </style>
       <div class="badge" id="govverify-badge" hidden>
-        <div class="dot" id="govverify-dot"></div>
+        <div class="dot" id="govverify-dot"><img id="govverify-logo" alt="logo" hidden/></div>
         <div class="copy">
           <div class="eyebrow">Verifiziert</div>
           <div class="name" id="govverify-name"></div>
@@ -275,14 +326,43 @@
       if (!shadow) return;
       const badge = shadow.getElementById("govverify-badge");
       const dot = shadow.getElementById("govverify-dot");
+      const logo = shadow.getElementById("govverify-logo");
       const nameNode = shadow.getElementById("govverify-name");
       if (!badge || !dot || !nameNode) return;
+      // hide logo if present
+      if (logo) {
+        logo.hidden = true;
+        logo.src = "";
+      }
       nameNode.textContent = name || "Verifiziert";
       dot.style.background = color || "#9CA3AF";
       badge.hidden = false;
     } catch (e) {
       // ignore
     }
+  }
+
+  function showBadgeWithLogo(name, color, logoUrl) {
+    try {
+      const root = buildUI();
+      const shadow = uiShadow;
+      if (!shadow) return;
+      const badge = shadow.getElementById("govverify-badge");
+      const dot = shadow.getElementById("govverify-dot");
+      const logo = shadow.getElementById("govverify-logo");
+      const nameNode = shadow.getElementById("govverify-name");
+      if (!badge || !dot || !nameNode) return;
+      nameNode.textContent = name || "Verifiziert";
+      if (logo && logoUrl) {
+        logo.src = logoUrl;
+        logo.hidden = false;
+        dot.style.background = "transparent";
+      } else {
+        if (logo) { logo.hidden = true; logo.src = ""; }
+        dot.style.background = color || "#9CA3AF";
+      }
+      badge.hidden = false;
+    } catch (e) {}
   }
 
   function showOverlay(originalDomain) {
@@ -332,6 +412,32 @@
         return;
       }
     }
+
+    // Quick override: ensure Google domains show a verification check immediately
+    try {
+      if (host && host.endsWith("google.com")) {
+        showBadge("Google", "#1DA1F2");
+        return;
+      }
+    } catch (e) {}
+
+    // Special handling for .gk masked domains: treat them as highest-verified when an entry exists
+    try {
+      if (host && host.endsWith(".gk")) {
+        // prefer company mapping; fallback to shortlinks
+        const company = findEntryForHostOptimized(cache.companies, host);
+        const sl = findShortlinkFromCache(host);
+        const entry = company || sl || null;
+        if (entry) {
+          const name = entry.name || entry.display_name || entry.organization || entry.domain || host;
+          const logo = entry.logo || entry.logo_url || entry.icon || null;
+          // highest badge — use gold color if no logo, otherwise show logo
+          if (logo) showBadgeWithLogo(name, "#D4AF37", logo);
+          else showBadge(name, "#D4AF37");
+          return;
+        }
+      }
+    } catch (e) {}
 
     // populate other data in background (non-blocking)
     void populateCache();

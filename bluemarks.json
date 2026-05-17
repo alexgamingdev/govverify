@@ -26,4 +26,15 @@
     "website": "https://www.linkedin.com/",
     "description": "Verification badge used on LinkedIn to indicate account authenticity."
   }
+  ,
+  {
+    "id": "x_verified",
+    "name": "X (Twitter) Verified",
+    "issuer": "X Corp.",
+    "domain": "x.com",
+    "color": "#1DA1F2",
+    "symbol": "blue_check",
+    "website": "https://x.com",
+    "description": "Verified badge for X main site."
+  }
 ]

@@ -112,6 +112,22 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       }
 
       try {
+        // If the caller requests a fresh fetch, do not rely on storage — fetch from the remote URL.
+        if (message.fresh) {
+          const src = SOURCES.find((s) => s.key === key);
+          if (src) {
+            const json = await fetchJson(src.url);
+            if (json !== null) {
+              sendResponse({ ok: true, payload: { url: src.url, fetchedAt: Date.now(), data: json } });
+              return;
+            }
+            // fallback to stored data if fetch fails
+            const storedFallback = await chrome.storage.local.get(key);
+            sendResponse({ ok: true, payload: storedFallback[key] || null });
+            return;
+          }
+        }
+
         const stored = await chrome.storage.local.get(key);
         sendResponse({ ok: true, payload: stored[key] || null });
       } catch (err) {
