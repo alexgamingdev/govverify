@@ -11,6 +11,7 @@
     bluemarks: "govverify:bluemarks",
     companies: "govverify:companies",
     govs: "govverify:govs",
+    gk: "govverify:gk",
     shortlinks: "govverify:shortlinks",
   };
 
@@ -18,7 +19,7 @@
   const OVERLAY_ID = "govverify-warning-overlay";
 
   // in-memory cache to avoid repeated storage reads
-  let cache = { bluemarks: null, companies: null, govs: null, shortlinks: null };
+  let cache = { bluemarks: null, companies: null, govs: null, gk: null, shortlinks: null };
   // keep closed shadow reference for tamper-resistance
   let uiRoot = null;
   let uiShadow = null;
@@ -127,15 +128,17 @@
   // load remaining data in parallel but non-blocking
   async function populateCache() {
     try {
-      // always fetch fresh copies for bluemarks, companies and govs
-      const [bm, co, gv] = await Promise.all([
+      // always fetch fresh copies for bluemarks, companies, govs and gk
+      const [bm, co, gv, gk] = await Promise.all([
         requestFresh("bluemarks"),
         requestFresh("companies"),
         requestFresh("govs"),
+        requestFresh("gk"),
       ]);
       cache.bluemarks = bm?.data || null;
       cache.companies = co?.data || null;
       cache.govs = gv?.data || null;
+      cache.gk = gk?.data || null;
     } catch (e) {
       // ignore - keep existing cache
     }
@@ -424,15 +427,16 @@
     // Special handling for .gk masked domains: treat them as highest-verified when an entry exists
     try {
       if (host && host.endsWith(".gk")) {
-        // prefer company mapping; fallback to shortlinks
+        // prefer gk mapping; fallback to company mapping then shortlinks
+        const gkEntry = findEntryForHostOptimized(cache.gk, host);
         const company = findEntryForHostOptimized(cache.companies, host);
         const sl = findShortlinkFromCache(host);
-        const entry = company || sl || null;
+        const entry = gkEntry || company || sl || null;
         if (entry) {
           const name = entry.name || entry.display_name || entry.organization || entry.domain || host;
-          const logo = entry.logo || entry.logo_url || entry.icon || null;
-          // highest badge — use gold color if no logo, otherwise show logo
-          if (logo) showBadgeWithLogo(name, "#D4AF37", logo);
+          // use GovVerify logo for all .gk badges (bundled asset)
+          const govverifyLogo = chrome?.runtime?.getURL ? chrome.runtime.getURL("assets/logo.svg") : null;
+          if (govverifyLogo) showBadgeWithLogo(name, "#D4AF37", govverifyLogo);
           else showBadge(name, "#D4AF37");
           return;
         }
@@ -515,6 +519,7 @@
       if (k === KEYS.companies) cache.companies = changes[k].newValue?.data || null;
       if (k === KEYS.govs) cache.govs = changes[k].newValue?.data || null;
       if (k === KEYS.bluemarks) cache.bluemarks = changes[k].newValue?.data || null;
+      if (k === KEYS.gk) cache.gk = changes[k].newValue?.data || null;
     }
     // re-run checks quickly when data changes
     setTimeout(() => void runChecks(), 50);

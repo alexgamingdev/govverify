@@ -12,6 +12,7 @@ const SOURCES = [
   { key: "govverify:bluemarks", url: `${BASE}/bluemarks.json` },
   { key: "govverify:companies", url: `${BASE}/companies.json` },
   { key: "govverify:govs", url: `${BASE}/govs.json` },
+  { key: "govverify:gk", url: `${BASE}/gk.json` },
   { key: "govverify:shortlinks", url: `${BASE}/shortlinks.json` },
 ];
 
@@ -102,6 +103,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       const mapping = {
         bluemarks: "govverify:bluemarks",
         companies: "govverify:companies",
+        gk: "govverify:gk",
         govs: "govverify:govs",
         shortlinks: "govverify:shortlinks",
       };
